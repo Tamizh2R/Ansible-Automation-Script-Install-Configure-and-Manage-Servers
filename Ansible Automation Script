@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Master Server Installation
+yum update -y            # Update the system packages.
+yum install python-pip -y  # Install Python's package manager, pip.
+pip install ansible      # Use pip to install Ansible.
+
+# Slave Server Installation
+yum update -y            # Update the system packages.
+yum install python-pip -y  # Install Python's package manager, pip.
+
+# Check Section
+ansible all -i hosts -m yum -a "name=httpd state=present" -b
+# Use Ansible to install the Apache HTTP Server (httpd) on all hosts defined in the 'hosts' inventory file.
+
+ansible all -i hosts -m service -a "name=httpd state=started" -b
+# Use Ansible to start the httpd service on all hosts defined in the 'hosts' inventory file.
+
+ansible all -i hosts -m ping
+# Use Ansible to check connectivity to all hosts defined in the 'hosts' inventory file using the 'ping' module.
+
+ansible all -i hosts -a "date"
+# Use Ansible to display the current date on all hosts defined in the 'hosts' inventory file.
+
+ansible all -i hosts -a "yum install mysql -y"
+# Use Ansible to install MySQL on all hosts defined in the 'hosts' inventory file.
+
+ansible all -i slaves.txt --module-name copy --args "src=/home/ec2-user/test dest=/tmp" -b
+# Use Ansible to copy a file from the master server to all hosts defined in the 'slaves.txt' inventory file.
+
+# Ansible Configuration File Download
+wget https://raw.githubusercontent.com/ansible/ansible/stable-2.11/examples/ansible.cfg
+# Download an example Ansible configuration file ('ansible.cfg') from the official Ansible GitHub repository.
+
+# Ansible Concepts
+# adhoc - Refers to running single, one-off tasks with Ansible.
+# Playbook - Multitask execution using YAML files.
+# vault - Used to encrypt sensitive data within Ansible files.
+# roles - Templates for organizing playbooks and tasks.
+# Ansible Galaxy - A platform for sharing, discovering, and managing Ansible roles created by the community.
